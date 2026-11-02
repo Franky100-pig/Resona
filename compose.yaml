@@ -8,6 +8,7 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+      - required: false
     environment:
       DATABASE_PATH: /app/instance/resona.sqlite3
       RESONA_STORAGE_ROOT: /app/instance/storage
