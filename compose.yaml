@@ -1,3 +1,4 @@
+
 name: resona
 
 services:
@@ -6,13 +7,16 @@ services:
       context: .
     image: resona:local
     restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
     environment:
       DATABASE_PATH: /app/instance/resona.sqlite3
       RESONA_STORAGE_ROOT: /app/instance/storage
       REDIS_URL: redis://redis:6379/1
-      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost:8001}
-      EXABYTE_OIDC_CALLBACK_URL: ${EXABYTE_OIDC_CALLBACK_URL:-http://localhost:8001/auth/exabyte/callback}
-      SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-0}
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-https://resona.neuorise.com}
+      EXABYTE_OIDC_CALLBACK_URL: ${EXABYTE_OIDC_CALLBACK_URL:-https://resona.neuorise.com/auth/exabyte/callback}
+      SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-1}
     ports:
       - "8001:8001"
     volumes:
@@ -21,7 +25,11 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/healthz', timeout=5).read()"]
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/healthz', timeout=5).read()"
       interval: 30s
       timeout: 10s
       retries: 3
@@ -31,12 +39,16 @@ services:
     image: resona:local
     restart: unless-stopped
     env_file:
-      - .env
+      - path: .env
+        required: false
     environment:
       DATABASE_PATH: /app/instance/resona.sqlite3
       RESONA_STORAGE_ROOT: /app/instance/storage
       REDIS_URL: redis://redis:6379/1
-    command: ["sh", "-c", "while true; do flask --app run:app exabyte-maintenance; sleep 60; done"]
+    command:
+      - sh
+      - -c
+      - "while true; do flask --app run:app exabyte-maintenance; sleep 60; done"
     volumes:
       - resona-instance:/app/instance
     depends_on:
@@ -46,11 +58,17 @@ services:
   redis:
     image: redis:7-alpine
     restart: unless-stopped
-    command: ["redis-server", "--appendonly", "yes"]
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
     volumes:
       - resona-redis:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test:
+        - CMD
+        - redis-cli
+        - ping
       interval: 10s
       timeout: 5s
       retries: 5
