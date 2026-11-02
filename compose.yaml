@@ -2,17 +2,49 @@
 name: resona
 
 x-resona-env: &resona-env
+  # Application security
+  SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
+
+  # Database and storage
   DATABASE_PATH: ${DATABASE_PATH:-/app/instance/resona.sqlite3}
   RESONA_STORAGE_ROOT: ${RESONA_STORAGE_ROOT:-/app/instance/storage}
-  REDIS_URL: ${REDIS_URL:-redis://redis:6379/1}
+  RESONA_USER_QUOTA_BYTES: ${RESONA_USER_QUOTA_BYTES:-1073741824}
+
+  # Administrator
+  ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+  ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+  ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+
+  # AI provider
+  CLOSEAI_BASE_URL: ${CLOSEAI_BASE_URL:-https://api.openai-proxy.org}
+  CLOSEAI_API_KEY: ${CLOSEAI_API_KEY:-}
+  CLOSEAI_MODEL: ${CLOSEAI_MODEL:-gpt-5.6-sol}
+  CLOSEAI_PREFER_ENV: ${CLOSEAI_PREFER_ENV:-1}
+  CLOSEAI_READ_TIMEOUT_SECONDS: ${CLOSEAI_READ_TIMEOUT_SECONDS:-300}
+
+  # Resend email service
+  RESEND_API_KEY: ${RESEND_API_KEY:-}
+  RESEND_FROM_EMAIL: ${RESEND_FROM_EMAIL:-}
+  RESEND_FROM_NAME: ${RESEND_FROM_NAME:-Resona}
+
+  # CAPTCHA
+  CAPTCHA_CHALLENGE_COUNT: ${CAPTCHA_CHALLENGE_COUNT:-50}
+  CAPTCHA_CHALLENGE_DIFFICULTY: ${CAPTCHA_CHALLENGE_DIFFICULTY:-4}
+
+  # Production URLs
   PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-https://resona.neuorise.com}
-  EXABYTE_OIDC_CALLBACK_URL: ${EXABYTE_OIDC_CALLBACK_URL:-https://resona.neuorise.com/auth/exabyte/callback}
   SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-1}
 
-  # Add your Dockhand-managed secrets here,
-  # using the exact variable names your app expects.
-  # Example:
-  # SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
+  # Exabyte OIDC
+  EXABYTE_OIDC_ISSUER: ${EXABYTE_OIDC_ISSUER:-https://accounts.exabyte.org.cn}
+  EXABYTE_OIDC_CALLBACK_URL: ${EXABYTE_OIDC_CALLBACK_URL:-https://resona.neuorise.com/auth/exabyte/callback}
+  EXABYTE_OIDC_SCOPES: "${EXABYTE_OIDC_SCOPES:-openid profile email}"
+
+  # Redis
+  REDIS_URL: ${REDIS_URL:-redis://redis:6379/1}
+
+  # AI agent
+  AGENT_MAX_STEPS: ${AGENT_MAX_STEPS:-80}
 
 services:
   web:
