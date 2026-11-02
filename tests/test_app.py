@@ -67,6 +67,12 @@ def test_login_page_includes_project_credit_and_repository_link(client):
     assert b'rel="noopener noreferrer"' in response.data
 
 
+def test_healthcheck_is_public(client):
+    response = client.get("/healthz")
+    assert response.status_code == 200
+    assert response.get_json() == {"status": "ok"}
+
+
 def test_disable_devtool_is_self_hosted_and_enabled_without_blocking_editing(client):
     response = client.get("/auth/login")
     assert response.status_code == 200

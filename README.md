@@ -45,6 +45,44 @@ python run.py debug
 
 This enables Flask debug mode and prints each user's AI prompt, step progress, model response, tool call and arguments, tool result, validation event, and final outcome. Large strings are truncated, and credentials, API keys, passwords, tokens, authorization headers, and secrets are redacted. A normal `python run.py` launch keeps agent tracing disabled.
 
+## Docker
+
+The Docker web container listens on port `8001`. Docker Compose also starts Redis for persistent server-side sessions and a lightweight maintenance container for Exabyte avatar jobs and delayed account deletion.
+
+```sh
+cp .env.example .env
+# Set at least a long random SECRET_KEY. Add provider and administrator values as needed.
+docker compose up --build -d
+```
+
+Open [http://localhost:8001](http://localhost:8001). Application data is retained in the named `resona-instance` volume, including SQLite, user workspaces, admin-saved provider credentials, and Exabyte avatars. Redis data is retained in `resona-redis`.
+
+For local Docker use, set these values in `.env`:
+
+```dotenv
+PUBLIC_BASE_URL=http://localhost:8001
+EXABYTE_OIDC_CALLBACK_URL=http://localhost:8001/auth/exabyte/callback
+SESSION_COOKIE_SECURE=0
+```
+
+Useful commands:
+
+```sh
+docker compose logs -f web
+docker compose down
+# Also delete all persistent Resona and Redis data only when intentionally starting over:
+docker compose down --volumes
+```
+
+To run only the web container without the Redis and maintenance companions:
+
+```sh
+docker build -t resona .
+docker run --rm -p 8001:8001 --env-file .env -v resona-instance:/app/instance resona
+```
+
+The single-container command uses the application's in-process session cache unless `REDIS_URL` points to a reachable Redis server. Compose is recommended for full production-equivalent behavior.
+
 Set `SECRET_KEY` before deployment. To enable Vibe Agent calls, either set `CLOSEAI_API_KEY` on the server or save it from the admin control center. Browsers send only the literal `{{RESONA_SERVER_API_KEY}}` placeholder; Resona resolves the active server key, base URL, and model and makes the provider request itself. No provider key is generated for or exposed to an individual user. User workspaces default to `instance/storage`; use `RESONA_STORAGE_ROOT` to mount a dedicated server volume.
 
 `CLOSEAI_BASE_URL` may point to any public HTTPS service implementing the OpenAI chat-completions protocol. Resona accepts a host root, a versioned base such as `https://api.openai.com/v1` or `https://openrouter.ai/api/v1`, or a complete URL ending in `/chat/completions`. Localhost, credential-bearing URLs, and private-network IP addresses remain blocked to prevent server-side request abuse.

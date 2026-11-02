@@ -117,6 +117,10 @@ def create_app(test_config=None):
     def home():
         return redirect(url_for("player.index" if g.get("user") else "auth.login"))
 
+    @app.get("/healthz")
+    def healthz():
+        return {"status": "ok"}
+
     @app.before_request
     def load_user():
         from .db import get_db
