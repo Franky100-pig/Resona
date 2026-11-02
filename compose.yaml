@@ -2,16 +2,17 @@
 name: resona
 
 x-resona-env: &resona-env
-  DATABASE_PATH: /app/instance/resona.sqlite3
-  RESONA_STORAGE_ROOT: /app/instance/storage
-  REDIS_URL: redis://redis:6379/1
+  DATABASE_PATH: ${DATABASE_PATH:-/app/instance/resona.sqlite3}
+  RESONA_STORAGE_ROOT: ${RESONA_STORAGE_ROOT:-/app/instance/storage}
+  REDIS_URL: ${REDIS_URL:-redis://redis:6379/1}
   PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-https://resona.neuorise.com}
   EXABYTE_OIDC_CALLBACK_URL: ${EXABYTE_OIDC_CALLBACK_URL:-https://resona.neuorise.com/auth/exabyte/callback}
   SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-1}
 
-  # Add any Dockhand-managed secrets here.
-  # Example, if your app uses SECRET_KEY:
-  # SECRET_KEY: ${SECRET_KEY:?Configure SECRET_KEY in Dockhand}
+  # Add your Dockhand-managed secrets here,
+  # using the exact variable names your app expects.
+  # Example:
+  # SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
 
 services:
   web:
@@ -20,12 +21,7 @@ services:
     image: resona:local
     restart: unless-stopped
 
-    env_file:
-      - path: .env.dockhand
-        required: false
-
-    environment:
-      <<: *resona-env
+    environment: *resona-env
 
     ports:
       - "8001:8001"
@@ -52,12 +48,7 @@ services:
     image: resona:local
     restart: unless-stopped
 
-    env_file:
-      - path: .env.dockhand
-        required: false
-
-    environment:
-      <<: *resona-env
+    environment: *resona-env
 
     command:
       - sh
