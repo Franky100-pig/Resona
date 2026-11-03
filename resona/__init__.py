@@ -2,7 +2,7 @@ import os
 import secrets
 from pathlib import Path
 
-from flask import Flask, g, redirect, request, session, url_for
+from flask import Flask, g, redirect, request, session, url_for, render_template
 from flask_session import Session
 from cachelib import SimpleCache
 from redis import Redis
@@ -120,6 +120,10 @@ def create_app(test_config=None):
     @app.get("/healthz")
     def healthz():
         return {"status": "ok"}
+
+    @app.route("/resonaliteprivacy")
+    def resonaliteprivacy():
+        return render_template("resonaliteprivacy.html")
 
     @app.before_request
     def load_user():
