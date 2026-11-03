@@ -1,5 +1,5 @@
 Flask==3.1.3
-Authlib==1.6.12
+Authlib==1.9.2
 Flask-Session==0.8.0
 cachelib==0.13.0
 capjs-server==0.2.1
