@@ -126,7 +126,7 @@ def create_app(test_config=None):
         return render_template("lite/privacy.html")
 
     @app.route("/lite")
-    def resonaliteprivacy():
+    def resonalite():
         return render_template("lite/index.html")
 
     @app.before_request
