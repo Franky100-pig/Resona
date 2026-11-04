@@ -121,14 +121,6 @@ def create_app(test_config=None):
     def healthz():
         return {"status": "ok"}
 
-    @app.route("/lite/privacy")
-    def resonaliteprivacy():
-        return render_template("lite/privacy.html")
-
-    @app.route("/lite")
-    def resonalite():
-        return render_template("lite/index.html")
-
     @app.before_request
     def load_user():
         from .db import get_db
