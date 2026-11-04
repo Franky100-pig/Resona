@@ -1,0 +1,1064 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+  <meta name="theme-color" content="#101a1c">
+  <meta name="description"
+        content="Resona Lite is an offline ambient music app.
+        Create evolving soundscapes for rest, focus and quiet moments.">
+
+  <title>Resona Lite — A Little Space to Reset</title>
+
+  <link rel="icon"
+        href="https://raw.githubusercontent.com/Exabyte-Technologies/Resona-Lite/main/resona-lite/assets/resona-icon-gradient.png">
+
+  <style>
+    :root {
+      --bg: #101a1c;
+      --surface: #172629;
+      --surface2: #1c3032;
+      --mint: #83c9bd;
+      --mint-light: #b9e7dc;
+      --text: #f0f7f5;
+      --muted: #a2b6b3;
+      --border: rgba(195, 238, 229, .12);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont,
+                   "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button, a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a:focus-visible {
+      outline: 2px solid var(--mint);
+      outline-offset: 4px;
+    }
+
+    .container {
+      width: min(1140px, calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    /* Navigation */
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(16, 26, 28, .88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -.6px;
+      white-space: nowrap;
+    }
+
+    .brand img {
+      width: 38px;
+      height: 38px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .brand span {
+      color: var(--mint);
+      font-weight: 400;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      color: var(--mint-light);
+    }
+
+    /* Buttons */
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 25px;
+      border-radius: 12px;
+      font-weight: 650;
+      font-size: 14px;
+      transition: transform .2s, background .2s;
+      border: 1px solid transparent;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      background: var(--mint);
+      color: #102220;
+    }
+
+    .button-primary:hover {
+      background: var(--mint-light);
+    }
+
+    .button-secondary {
+      border-color: var(--border);
+      background: rgba(255, 255, 255, .035);
+      color: var(--text);
+    }
+
+    .button-secondary:hover {
+      background: rgba(255,255,255,.08);
+    }
+
+    /* Hero */
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 112px 0 120px;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 680px;
+      height: 680px;
+      right: -200px;
+      top: -110px;
+      border-radius: 50%;
+      background: radial-gradient(circle,
+        rgba(85, 179, 158, .14),
+        transparent 68%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--mint);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      display: block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 0 0 16px var(--mint);
+    }
+
+    h1, h2, h3, p {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin: 24px 0;
+      font-size: clamp(50px, 6vw, 82px);
+      font-weight: 650;
+      letter-spacing: -4px;
+      line-height: 1.06;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--mint);
+    }
+
+    .hero-description {
+      max-width: 490px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.9;
+      margin-bottom: 35px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px 24px;
+      margin-top: 38px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .hero-tags span::before {
+      content: "✓";
+      color: var(--mint);
+      margin-right: 7px;
+    }
+
+    /* Phone */
+
+    .phone-area {
+      display: flex;
+      justify-content: center;
+      position: relative;
+    }
+
+    .phone-glow {
+      position: absolute;
+      inset: 12% -8%;
+      background: radial-gradient(ellipse,
+        rgba(131,201,189,.21), transparent 70%);
+      filter: blur(32px);
+      pointer-events: none;
+    }
+
+    .phone {
+      position: relative;
+      width: min(295px, 75%);
+      padding: 8px;
+      border-radius: 40px;
+      background: #05090a;
+      border: 2px solid #3b4b4d;
+      box-shadow:
+        0 30px 100px rgba(0,0,0,.46),
+        0 0 55px rgba(131,201,189,.09);
+      transform: rotate(4deg);
+    }
+
+    .phone img {
+      display: block;
+      width: 100%;
+      border-radius: 32px;
+    }
+
+    .float-pill {
+      position: absolute;
+      left: 0;
+      bottom: 12%;
+      padding: 12px 18px;
+      border-radius: 15px;
+      border: 1px solid var(--border);
+      background: rgba(28,48,50,.92);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 12px 35px rgba(0,0,0,.25);
+      font-size: 13px;
+      color: var(--mint-light);
+    }
+
+    /* Section system */
+
+    section {
+      scroll-margin-top: 95px;
+    }
+
+    .section {
+      padding: 110px 0;
+    }
+
+    .section-muted {
+      background: #132123;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-head {
+      max-width: 680px;
+      margin: 0 auto 58px;
+      text-align: center;
+    }
+
+    .section-head h2 {
+      margin: 16px 0;
+      font-size: clamp(32px, 4vw, 46px);
+      letter-spacing: -1.8px;
+      line-height: 1.17;
+      font-weight: 650;
+    }
+
+    .section-head p {
+      font-size: 16px;
+      color: var(--muted);
+    }
+
+    /* Features */
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .feature {
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: transform .25s, border-color .25s;
+    }
+
+    .feature:hover {
+      transform: translateY(-4px);
+      border-color: rgba(131,201,189,.35);
+    }
+
+    .feature-icon {
+      width: 49px;
+      height: 49px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(131,201,189,.1);
+      color: var(--mint);
+      font-size: 23px;
+      margin-bottom: 25px;
+    }
+
+    .feature h3 {
+      font-size: 18px;
+      margin-bottom: 9px;
+      letter-spacing: -.4px;
+    }
+
+    .feature p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+
+    /* Mood cards */
+
+    .moods {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    .mood {
+      position: relative;
+      min-height: 195px;
+      padding: 25px;
+      border-radius: 19px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      isolation: isolate;
+      background: var(--surface);
+    }
+
+    .mood::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 180px;
+      height: 180px;
+      top: -90px;
+      right: -55px;
+      border-radius: 50%;
+      filter: blur(35px);
+      opacity: .48;
+    }
+
+    .mood:nth-child(1)::before {background: #566cc4;}
+    .mood:nth-child(2)::before {background: #b08bda;}
+    .mood:nth-child(3)::before {background: #60bbab;}
+    .mood:nth-child(4)::before {background: #e1ac68;}
+
+    .mood h3 {
+      font-size: 20px;
+      margin: 0 0 4px;
+    }
+
+    .mood p {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+    }
+
+    /* Screenshot showcase */
+
+    .showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .showcase-card {
+      overflow: hidden;
+      border-radius: 25px;
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(circle at 50% 50%,
+          rgba(131,201,189,.1), transparent 65%),
+        var(--surface);
+      text-align: center;
+      padding: 43px 35px 0;
+    }
+
+    .showcase-card h3 {
+      margin-bottom: 8px;
+      font-size: 24px;
+      letter-spacing: -.6px;
+    }
+
+    .showcase-card p {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0 auto 32px;
+      max-width: 320px;
+    }
+
+    .showcase-card img {
+      display: block;
+      width: min(275px, 100%);
+      margin: 0 auto;
+      border-radius: 22px 22px 0 0;
+      box-shadow: 0 0 45px rgba(0,0,0,.2);
+    }
+
+    /* Privacy section */
+
+    .privacy {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 80px;
+    }
+
+    .privacy h2 {
+      font-size: clamp(32px, 4vw, 45px);
+      letter-spacing: -1.5px;
+      line-height: 1.2;
+      margin: 18px 0;
+    }
+
+    .privacy p {
+      color: var(--muted);
+    }
+
+    .privacy-visual {
+      min-height: 280px;
+      border-radius: 30px;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle,
+          rgba(131,201,189,.14), transparent 65%),
+        var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .privacy-symbol {
+      width: 126px;
+      height: 126px;
+      border: 1px solid rgba(131,201,189,.38);
+      border-radius: 36px;
+      display: grid;
+      place-items: center;
+      color: var(--mint);
+      font-size: 52px;
+      background: rgba(131,201,189,.09);
+      box-shadow: 0 0 60px rgba(131,201,189,.1);
+    }
+
+    /* CTA */
+
+    .cta {
+      padding: 95px 30px;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      background:
+        radial-gradient(ellipse at 50% 0%,
+          rgba(131,201,189,.17), transparent 65%),
+        var(--surface);
+    }
+
+    .cta h2 {
+      font-size: clamp(34px, 5vw, 52px);
+      letter-spacing: -2px;
+      line-height: 1.15;
+      margin: 18px 0;
+    }
+
+    .cta p {
+      color: var(--muted);
+      max-width: 470px;
+      margin: 0 auto 28px;
+    }
+
+    /* Footer */
+
+    footer {
+      margin-top: 90px;
+      border-top: 1px solid var(--border);
+      padding: 38px 0;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .footer-copy {
+      color: var(--muted);
+      font-size: 12px;
+      max-width: 420px;
+      margin: 7px 0 0;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 23px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-links a:hover {
+      color: var(--mint);
+    }
+
+    /* Responsive */
+
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 72px;
+      }
+
+      .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .actions, .hero-tags {
+        justify-content: center;
+      }
+
+      .phone {
+        max-width: 290px;
+      }
+
+      .float-pill {
+        left: 12%;
+      }
+
+      .features {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .privacy {
+        gap: 30px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: min(100% - 36px, 1140px);
+      }
+
+      .nav {
+        min-height: 68px;
+      }
+
+      .nav-links {
+        gap: 15px;
+        font-size: 12px;
+      }
+
+      .nav-links .optional {
+        display: none;
+      }
+
+      .hero {
+        padding: 75px 0 100px;
+      }
+
+      h1 {
+        letter-spacing: -2.5px;
+      }
+
+      .hero-description {
+        font-size: 15px;
+      }
+
+      .section {
+        padding: 75px 0;
+      }
+
+      .features,
+      .showcase,
+      .privacy {
+        grid-template-columns: 1fr;
+      }
+
+      .moods {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .mood {
+        min-height: 150px;
+      }
+
+      .feature {
+        padding: 26px;
+      }
+
+      .privacy {
+        gap: 35px;
+      }
+
+      .privacy-visual {
+        min-height: 220px;
+      }
+
+      .footer-content {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {scroll-behavior: auto;}
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <header class="header">
+    <nav class="container nav"
+         aria-label="Main navigation">
+
+      <a class="brand" href="#top">
+        <img
+          src="https://raw.githubusercontent.com/Exabyte-Technologies/Resona-Lite/main/resona-lite/assets/resona-icon-gradient.png"
+          alt="Resona Lite icon">
+        resona <span>lite</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a class="optional" href="#experience">Explore</a>
+        <a href="#about">About</a>
+        <a class="optional"
+           href="https://github.com/Exabyte-Technologies/Resona-Lite"
+           target="_blank" rel="noopener noreferrer">
+          GitHub ↗
+        </a>
+      </div>
+
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-grid">
+
+        <div>
+          <div class="eyebrow">
+            Your little space for calm
+          </div>
+
+          <h1>
+            A little space<br>
+            <em>to reset.</em>
+          </h1>
+
+          <p class="hero-description">
+            Meet Resona Lite. An ambient music
+            experience that creates evolving
+            soundscapes right on your device.
+            Find your rhythm, quiet the noise,
+            and make room for yourself.
+          </p>
+
+          <div class="actions">
+            <a class="button button-primary"
+               href="#experience">
+              Explore the app ↗
+            </a>
+
+            <a class="button button-secondary"
+               href="https://github.com/Exabyte-Technologies/Resona-Lite"
+               target="_blank" rel="noopener noreferrer">
+              View on GitHub
+            </a>
+          </div>
+
+          <div class="hero-tags">
+            <span>Works offline</span>
+            <span>No account required</span>
+            <span>Made for iOS &amp; Android</span>
+          </div>
+        </div>
+
+        <div class="phone-area">
+          <div class="phone-glow"></div>
+
+          <div class="phone">
+            <img
+              src="https://raw.githubusercontent.com/Exabyte-Technologies/Resona-Lite/main/resona-lite/docs/screenshots/home.png"
+              alt="Resona Lite home interface showing music controls">
+          </div>
+
+          <div class="float-pill">
+            ✦ Made for your quiet moments
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="section section-muted">
+      <div class="container">
+
+        <div class="section-head">
+          <div class="eyebrow">The essentials</div>
+
+          <h2>
+            Everything you need.<br>
+            Nothing you don't.
+          </h2>
+
+          <p>
+            A thoughtful collection of sound tools
+            that lets you create your own atmosphere.
+          </p>
+        </div>
+
+        <div class="features">
+
+          <article class="feature">
+            <div class="feature-icon">♫</div>
+            <h3>Generative music</h3>
+            <p>
+              Enjoy evolving ambient compositions
+              created in real time on your device,
+              with new harmonies as you listen.
+            </p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon">◌</div>
+            <h3>Nature &amp; noise</h3>
+            <p>
+              Blend rain, ocean and forest-inspired
+              textures with white, pink or brown noise.
+            </p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon">≋</div>
+            <h3>Fine-tuned sound</h3>
+            <p>
+              Adjust layers, volume, tonal centers,
+              binaural beats and harmonies to build
+              your ideal listening environment.
+            </p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon">◷</div>
+            <h3>Sleep timer</h3>
+            <p>
+              Set a timer and let your soundscape
+              fade from your routine when it's
+              time to rest.
+            </p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon">▣</div>
+            <h3>Background listening</h3>
+            <p>
+              Keep listening while your phone is
+              locked or you're using another app,
+              with native playback controls.
+            </p>
+          </article>
+
+          <article class="feature">
+            <div class="feature-icon">◇</div>
+            <h3>Offline by design</h3>
+            <p>
+              No streaming, account, or cloud
+              processing is needed to create
+              and enjoy your music.
+            </p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Moods -->
+    <section class="section">
+      <div class="container">
+
+        <div class="section-head">
+          <div class="eyebrow">Find your moment</div>
+
+          <h2>Every mood has its sound.</h2>
+
+          <p>
+            Choose a starting point and let
+            Resona Lite shape the atmosphere.
+          </p>
+        </div>
+
+        <div class="moods">
+          <div class="mood">
+            <h3>☾ Sleep</h3>
+            <p>Settle into the night.</p>
+          </div>
+
+          <div class="mood">
+            <h3>✧ Meditation</h3>
+            <p>Find your stillness.</p>
+          </div>
+
+          <div class="mood">
+            <h3>◎ Focus</h3>
+            <p>Make room to think.</p>
+          </div>
+
+          <div class="mood">
+            <h3>☀ Awake</h3>
+            <p>Start fresh.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- App Screenshots -->
+    <section id="experience" class="section section-muted">
+      <div class="container">
+
+        <div class="section-head">
+          <div class="eyebrow">Inside Resona Lite</div>
+
+          <h2>Simple at first.<br>Deep when you want.</h2>
+
+          <p>
+            Start listening in seconds, or dive
+            deeper to craft an atmosphere that's
+            entirely your own.
+          </p>
+        </div>
+
+        <div class="showcase">
+          <div class="showcase-card">
+            <h3>Your space, your sound.</h3>
+            <p>
+              Choose a mood, start listening,
+              and adjust your mix from Home.
+            </p>
+            <img
+              loading="lazy"
+              src="https://raw.githubusercontent.com/Exabyte-Technologies/Resona-Lite/main/resona-lite/docs/screenshots/home.png"
+              alt="Resona Lite listening interface">
+          </div>
+
+          <div class="showcase-card">
+            <h3>Let harmony unfold.</h3>
+            <p>
+              Generate chord progressions and
+              customize the way your music evolves.
+            </p>
+            <img
+              loading="lazy"
+              src="https://raw.githubusercontent.com/Exabyte-Technologies/Resona-Lite/main/resona-lite/docs/screenshots/chords.png"
+              alt="Resona Lite chord generation interface">
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Privacy -->
+    <section id="about" class="section">
+      <div class="container privacy">
+
+        <div>
+          <div class="eyebrow">Designed with care</div>
+
+          <h2>
+            Your music.<br>
+            Your device.
+          </h2>
+
+          <p>
+            Resona Lite is built around a simple
+            idea: your quiet moments shouldn't
+            depend on an internet connection.
+          </p>
+
+          <p>
+            Music generation, chord processing
+            and playback take place locally.
+            You don't need to create an account,
+            and your listening experience doesn't
+            depend on a remote music service.
+          </p>
+
+          <a class="button button-secondary"
+             href="#download">
+            Discover Resona Lite ↗
+          </a>
+        </div>
+
+        <div class="privacy-visual">
+          <div class="privacy-symbol"
+               aria-hidden="true">♫</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section id="download">
+      <div class="container">
+
+        <div class="cta">
+          <div class="eyebrow">
+            Begin your journey
+          </div>
+
+          <h2>
+            Find a moment<br>
+            that's yours.
+          </h2>
+
+          <p>
+            Discover a lighter way to listen.
+            Explore the source code and learn
+            more about Resona Lite.
+          </p>
+
+          <a class="button button-primary"
+             href="https://github.com/Exabyte-Technologies/Resona-Lite"
+             target="_blank" rel="noopener noreferrer">
+            Explore on GitHub ↗
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-content">
+
+      <div>
+        <div class="brand">
+          <img
+            src="https://raw.githubusercontent.com/Exabyte-Technologies/Resona-Lite/main/resona-lite/assets/resona-icon-gradient.png"
+            alt="">
+          resona <span>lite</span>
+        </div>
+
+        <p class="footer-copy">
+          A standalone, offline music experience.
+          Resona Lite is separate from the full
+          Resona application.
+        </p>
+
+        <p class="footer-copy">
+          © 2026 Resona Lite.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#top">Back to top</a>
+
+        <!-- Change to your hosted privacy policy URL -->
+        <a href="privacy.html">Privacy Policy</a>
+
+        <a href="https://github.com/Exabyte-Technologies/Resona-Lite"
+           target="_blank" rel="noopener noreferrer">
+          GitHub ↗
+        </a>
+      </div>
+
+    </div>
+  </footer>
+
+</body>
+</html>
