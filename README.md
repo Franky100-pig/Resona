@@ -4,7 +4,7 @@
 
 **Official Website:** [https://resona.neuorise.com](https://resona.neuorise.com)
 
-**Resona Lite:** [https://resona.neuorise.com/lite](https://resona.neuorise.com/lite) (Resona Lite is a simplified mobile version of Resona) [Github Project](https://github.com/Exabyte-Technologies/Resona-Lite)
+**Resona Lite:** [https://resonalite.com/](https://resonalite.com/) (Resona Lite is a simplified mobile version of Resona) [Github Project](https://github.com/Exabyte-Technologies/Resona-Lite)
 
 Resona is an adaptive healing-music web application. It combines a procedural Web Audio engine with a persistent Vibe Agent that can reshape each user's pages, navigation, theme, and custom synthesis configuration while the protected player shell and microphone remain fixed. The users can also DIY their interface if they are not satisfied.
 Resona is created by Jingwen Hu and FuhangFu, with the help of AI and tutors.
